@@ -3,6 +3,8 @@
 # Author: Matt Nesbitt
 # Created: 2018-2-23
 
+# JA: You had to create different functions
+
 def main():
     first = input("Enter your first name: ").lower()
     last = input("Enter your last name: ").lower()
