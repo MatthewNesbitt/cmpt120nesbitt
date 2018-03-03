@@ -14,13 +14,17 @@ def main():
             guess = guess.lower()
             
 
-        elif guess[0] == "q":
+        elif guess[0] == 'q':
             quit(0)
 
         else:
             guess = "elephant"
             print("You have guessed correctly! Congrats!")
-            print("Thanks for playing!")
+            ques2 = input("Are you a fan of elephants? Answer 'y' or 'n'")
+            if ques2 == "y":
+                print("Awesome! I also like elephants.")
+            else:
+                print("Oh well, Not everyone likes elephants!")
             return
 main()
             
