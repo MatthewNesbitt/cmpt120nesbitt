@@ -17,8 +17,12 @@ def doLoop():
         cmd = input("What computation do you want to perform? ").lower()
 
         if cmd in ("add", "sub", "mult", "div"):
-            num1 = int(input("Enter the first number: "))
-            num2 = int(input("Enter the second number: "))
+            try:
+               num1 = int(input("Enter the first number: "))
+               num2 = int(input("Enter the second number: "))
+            except:
+                print("Please enter a number!")
+                continue
        
         if cmd == "add":
             result = num1 + num2
