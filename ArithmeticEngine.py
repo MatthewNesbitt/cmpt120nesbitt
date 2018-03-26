@@ -37,7 +37,7 @@ def doLoop():
             print("The result is " + str(result) + ".\n")
 
         elif cmd == "div":
-            result = num1 // num2
+            result = num1 // num2 # You can put this in a try clause for div by 0
             print("The result is " + str(result) + ".\n")
 
         elif cmd == "quit":
