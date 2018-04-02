@@ -5,6 +5,7 @@
 
 symbol = [ " ", "x", "o" ]
 
+# JA: This works, but you had to use a list of lists
 board = [' ',' ',' ',
          ' ',' ',' ',
          ' ',' ',' ']
