@@ -1,6 +1,9 @@
 from graphics import *
 from calc_functions import *
 
+# JA: You can consolidate some of your code
+# I coudn't fine the parenthesis in the calculator GUI
+
 buttons = []
 
 
