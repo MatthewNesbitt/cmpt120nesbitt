@@ -1,9 +1,6 @@
 from graphics import *
 from calc_functions import *
 
-# JA: You can consolidate some of your code
-# I coudn't fine the parenthesis in the calculator GUI
-
 buttons = []
 
 
@@ -165,16 +162,18 @@ def create_calc(scientific):
         buttons.append(create_button (win, 150, 96, 182.5, 132, ")", 'purple'))
 
 
-    displayString = ''
-    displayTextElement = Text(Point(150, 25), "")
-    displayTextElement.draw(win)
+    displayString1 = ''
+    displayString2 = ''
+    displayTextElement1 = Text(Point(150, 25), "")
+    displayTextElement1.draw(win)
+    displayTextElement2 = Text(Point(125, 37.5), "")
+    displayTextElement2.draw(win)
 
-    return win, displayString, displayTextElement
+    return win, displayString1, displayString2, displayTextElement1, displayTextElement2
 
 def main():
     scientific = False
-    win, displayString, displayTextElement = create_calc (scientific)
-
+    win, displayString1, displayString2, displayTextElement1, displayTextElement2 = create_calc (scientific)
     answer = None
     entry = 0
     operation = None
@@ -192,42 +191,48 @@ def main():
             key = check(button, label, x, y)
             if key:
                 if key == '=':
-                    clearNextNumber = True
+                    clearNextNumber = False
                     if answer == None:
                         answer = entry
-                        displayString = str(answer)
+                        displayString1 = entryString
+                        displayString2 = str(answer)
                         entry = 0
                         entryString = ''
                     else:
                         answer, entry = calculation(answer, entry, operation)
                         operation = None
-                        displayString = displayString + '\n' + '%20.3f' % (answer) 
+                        displayString1 = displayString1
+                        displayString2 = '%20.3f' % (answer) 
 
                 elif key in ['+', '-', '/', '*', '%']:
                     answer, entry = calculation(answer, entry, operation)
                     entryString = ''
                     operation = key
-                    displayString = displayString + key
+                    displayString1 = displayString1 + key
+                    displayString2 = displayString1
                     clearNextNumber = False
                     
                 elif key == '+/-':
-                    answer, entry = calculation(answer, entry, operation)                        
+                    answer, entry = calculation(answer, entry, operation)
                     entryString = ''
                     operation = key
-                    displayString = str(answer)
+                    displayString1 = ''
+                    displayString2 = str(answer)
                     clearNextNumber = True
 
                 elif key == 'x2':
                     answer, entry = calculation(answer, entry, operation)
                     operation = key
-                    displayString = str(answer) + str('^2')
+                    displayString1 = str(answer) + str('^2')
+                    displayString2 = displayString1
                     clearNextNumber = True
 
-                elif key  == 'root':
+                elif key  == '√':
                     answer, entry = calculation(answer, entry, operation)
                     entryString = ''
                     operation = key
-                    displayString = key + str(answer)
+                    displayString1 = key + entry
+                    displayString2 = str(answer)
                     clearNextNumber = True
 
                 elif key == '1/x':
@@ -235,26 +240,31 @@ def main():
                     answer, entry = calculation(answer, entry, operation)
                     entryString = ''
                     operation = key
-                    displayString = str(answer)
+                    displayString1 = ''
+                    displayString2 = str(answer)
                     clearNextNumber = True
 
                 elif key == 'C':
-                    displayString = ''
+                    displayString1 = ''
+                    displayString2 = displayString1
                     answer = None
                     entry = 0
                     entryString = ''
                     operation = None
 
                 elif key == 'M+':
-                    memory = addition(float(memory), entry or answer)
-                    displayString = float(memory)
+                    memory = add(float(memory), entry or answer)
+                    displayString1 = ''
+                    displayString2 = str(memory)
 
                 elif key == 'MR':
-                    displayString = float(memory)
+                    displayString1 = ''
+                    displayString2 = str(memory)
                     
                 elif key == 'M-':
-                    memory = subtraction(float(memory), entry or answer)
-                    displayString = float(memory)
+                    memory = subtract(float(memory), entry or answer)
+                    displayString1 = ''
+                    displayString2 = str(memory)
 
                 elif key == 'MC':
                     memory = 0
@@ -263,62 +273,49 @@ def main():
                     temp = memory
                     memory = entry
                     entry = temp
-                    displayString = float(memory)
-
+                    displayString1 = ''
+                    displayString2 = str(memory)
+                    
                 elif key == '10^x':
                     answer, entry = calculation(answer, entry, operation)
                     operation = key
-                    displayString = '10^' + str(answer)
+                    displayString1 = '10^' + str(answer)
+                    displayString2 = displayString1
                     clearNextNumber = True
                     
-                elif key in ['sin', 'cos', 'tan']:
+                elif key in ['sin', 'cos', 'tan', 'log', 'ln', 'sin^-1', 'cos^-1', 'tan^-1']:
                     answer, entry = calculation(answer, entry, operation)
                     operation = key
-                    displayString = key + '(' + str(answer) + ')'
+
+                    if answer == None:
+                        answer = entry
+                        displayString1 = key + '(' + entryString + ')'
+                        displayString2 = str(answer)
+                        entry = 0
+                        entryString = ''
+                    else:
+                        answer, entry = calculation(answer, entry, operation)
+                        operation = None
+                        displayString1 = key + '(' + entryString + ')'
+                        displayString2 = '%20.3f' % (answer)
+
                     clearNextNumber = True
 
-                elif key == 'log':
-                    answer, entry = calculation(answer, entry, operation)
-                    operation = key
-                    displayString = key + '(' + str(answer) + ')'
-                    clearNextNumber = True
-                    
-                elif key == 'ln':
-                    answer, entry = calculation(answer, entry, operation)
-                    operation = key
-                    displayString = key + '(' + str(answer) + ')'
-                    clearNextNumber = True
-                    
-                elif key == 'sin^-1':
-                    answer, entry = calculation(answer, entry, operation)
-                    operation = key
-                    displayString = key + '(' + str(answer) + ')'
-                    clearNextNumber = True
-                                    
-                elif key == 'cos^-1':
-                    answer, entry = calculation(answer, entry, operation)
-                    operation = key
-                    displayString = key + '(' + str(answer) + ')'
-                    clearNextNumber = True
-                                    
-                elif key == 'tan^-1':
-                    answer, entry = calculation(answer, entry, operation)
-                    operation = key
-                    displayString = key + '(' + str(answer) + ')'
-                    clearNextNumber = True
 
                 elif key == 'x^y':
                     answer, entry = calculation(answer, entry, operation)
                     entryString = ''
                     operation = key
-                    displayString = displayString + '^'
+                    displayString1 = displayString1 + '^'
+                    displayString2 = str(answer)
                     clearNextNumber = False
 
                 elif key == 'Sci':
                     win.close()
                     scientific = not scientific
-                    win, displayString, displayTextElement = create_calc (scientific)
-                    displayString = ''
+                    win, displayString1, displayString2, displayTextElement1, displayTextElement2 = create_calc (scientific)
+                    displayString1 = ''
+                    displayString2 = ''
                     clearNextNumber = False
                     answer = None
                     entry = 0
@@ -327,29 +324,42 @@ def main():
 
                 elif key == '(':
                     entryString = ''
-                    displayString = displayString + '(' + entryString
+                    displayString1 = displayString1 + '(' + entryString
+                    displayString2 = displayString1
                     clearNextNumber = False
 
                 elif key == ')':
-                    displayString = displayString + ')'
-                    clearNextNumer = False    
+                    displayString1 = displayString1 + ')'
+                    displayString2 = displayString1
+                    clearNextNumer = False
 
+                    
                 else:
                     if clearNextNumber:
-                        displayString = ''
+                        displayString1 = ''
+                        displayString2 = ''
                         clearNextNumber = False
                         answer = None
                         entry = 0
                         entryString = ''
                         operation = None
                     entryString = entryString + key
-                    entry = eval(entryString) 
-                    displayString = displayString + key
+                    if entryString[0] == '.':
+                        entry = eval("0" + entryString)
+                    else:
+                        entry = eval(entryString) 
+                    displayString1 = displayString1 + key
+                    displayString2 = displayString1
 
-                displayTextElement.undraw()
-                displayTextElement = Text(Point(100, 25), displayString)
-                displayTextElement.setFace('arial')
-                displayTextElement.setSize(10)
-                displayTextElement.draw(win)
+                displayTextElement1.undraw()
+                displayTextElement1 = Text(Point(100, 25), displayString1)
+                displayTextElement1.setFace('arial')
+                displayTextElement1.setSize(10)
+                displayTextElement1.draw(win)
+                displayTextElement2.undraw()
+                displayTextElement2 = Text(Point(100, 37.5), displayString2)
+                displayTextElement2.setFace('arial')
+                displayTextElement2.setSize(10)
+                displayTextElement2.draw(win)
 
 main()
