@@ -1,6 +1,8 @@
 from graphics import *
 from calc_functions import *
 
+# JA: Your calculator doesn't have parenthesis keys
+
 buttons = []
 
 

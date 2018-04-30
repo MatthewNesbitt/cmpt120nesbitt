@@ -19,7 +19,7 @@ class Product:
         cost = int(count) * self.price
         return cost
 
-    def quantity(self,count):
+    def inventory(self,count):
         self.quantity = self.quantity - int(count)
         return self.quantity
         
@@ -60,7 +60,7 @@ def main():
 
         if product.stock(count):
             if cash >= product.cost(count):
-                product.quantity(count)
+                product.inventory(count)
                 cash -= product.cost(count)
                 print ("You purchased", count, product.name+".")
                 print ("You have $", "{0:.2f}".format(cash), "remaining.")
